@@ -1,14 +1,16 @@
 function toggleDropdown(e) {
-  const _d = $(e.target).closest('.dropdown'),
-    _m = $('.dropdown-menu', _d);
+  e.preventDefault();
+  const _d = $('.megamenu.dropdown'),
+  _m = $('.dropdown-menu');
   setTimeout(function () {
-    const shouldOpen = e.type !== 'click' && _d.is(':hover');
-    _m.toggleClass('show', shouldOpen);
-    _d.toggleClass('show', shouldOpen);
-    $('[data-toggle="dropdown"]', _d).attr('aria-expanded', shouldOpen);
+    var shouldShow = e.type === "mouseover" || $(".dropdown-menu:hover").length > 0;
+    if(e.type === "click"){shouldShow = !_m.hasClass("show");}
+    _m.toggleClass('show', shouldShow);
+    _d.toggleClass('show', shouldShow);
+    $('[data-toggle="dropdown"]', _d).attr('aria-expanded', shouldShow);
   }, e.type === 'mouseleave' ? 300 : 0);
 }
 
 $('body')
-  .on('mouseenter mouseleave', '.dropdown', toggleDropdown)
-  .on('click', '.dropdown-menu a', toggleDropdown);
+  .on('mouseenter mouseleave', '.dropdown, .dropdown-menu', toggleDropdown)
+  .on('click', '#megamenu', toggleDropdown);
